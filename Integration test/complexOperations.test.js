@@ -45,23 +45,27 @@ describe('complexOperations - Mocked Tests', () => {
       });
   });
 
-  describe('sumGreaterThan mocked',() =>{
-    beforeEach(()=> {
-        jest.restoreAllMocks()
-    });
-    it('mocking sum to be greater than third number',() =>{
-        jest.spyOn(basicOperations, 'sum').mockReturnValue('10');
-        expect(complexOperations.sumGreaterThan(0, 0, 8)).toBe('10 is greater than 8')
-    });
-    it('mocking sum to be less than third number',() =>{
-      jest.spyOn(basicOperations, 'sum').mockReturnValue('5');
-      expect(complexOperations.sumGreaterThan(0, 0, 15)).toBe('5 is less than 15')
-    });
-    it('mocking isNumber to undefined',() =>{
-      jest.spyOn(basicOperations, 'isNumber').mockReturnValue(undefined);
-      expect(complexOperations.sumGreaterThan(1, 2, 5)).toBe('The params should be numbers')
-    });
-  });
+  describe('sumGreaterThan function mocked', () => {
+    beforeEach(() => {
+      jest.restoreAllMocks()
+    })
+    it('function isNumber is false', () => {
+      jest.spyOn(basicOperations, 'isNumber').mockReturnValue(false)
+      expect(complexOperations.sumGratherThan(0, 0, 0)).toBe(
+        'The params should be numbers'
+      )
+    })
+    it('return of sum is 13  and then is greater than 10', () => {
+      jest.spyOn(basicOperations, 'sum').mockReturnValue('13')
+      expect(complexOperations.sumGratherThan(0, 0, 10)).toBe(
+        '13 is grather than 10'
+      )
+    })
+    it('return of sum is 9 and then is less than 16', () => {
+      jest.spyOn(basicOperations, 'sum').mockReturnValue('9')
+      expect(complexOperations.sumGratherThan(0, 0, 16)).toBe('9 is less than 16')
+    })
+  })
   
   describe('intersectionBetweenArrays mocked',() =>{
     beforeEach(()=> {
@@ -144,8 +148,8 @@ describe('complexOperations - Mocked Tests', () => {
 
 describe('complexOperation - Integration Tests', () => {
   describe('checkEmail', () => {
-    it('The Email should be a String', () => {
-      expect(complexOperations.checkEmail()).toMatch('The email should be a string')
+    it('email should be a string', () => {
+      expect(complexOperations.checkEmail()).toMatch('The email should be an string')
     });
     it('Email undefined verification', () => {
       expect(complexOperations.checkEmail(undefined)).toBe('The email should be an string')
@@ -174,44 +178,26 @@ describe('complexOperation - Integration Tests', () => {
     it('function with missing parameters', () => {
       expect(complexOperations.calculateArea()).toMatch('undefined is not supported')
     });
-    it('Using float numbers to calculate area', () => {
-      expect(complexOperations.calculateArea('rectangle',3.5,10.1)).toBeCloseTo(35.35)
-    });
-    it('Using negative numbers to calculate area', () => {
-      expect(complexOperations.calculateArea('square',-13,-7)).toBe(91)
-    });
-    it('Triangle with toBeGreaterThan', () => {
-      expect(complexOperations.calculateArea('triangle',20,30)).toBeGreaterThan(290)
-    });
     it('Using a string as first number', () => {
       expect(complexOperations.calculateArea('rectangle','notANumber',30)).toBe('number1 and number2 should be numbers')
     });
     it('Using a string as second number', () => {
       expect(complexOperations.calculateArea('square',15,'notANumber')).toBe('number1 and number2 should be numbers')
     });
-    it('Testing circle area', () => {
-      expect(complexOperations.calculateArea('circle',15)).toBeCloseTo(706.858)
+    it('calculate area of circle with 3 of radius not equal to 18', () => {
+      expect(complexOperations.calculateArea('circle', 3)).not.toEqual(18)
     });
   });
 
   describe('sumGreaterThan', () => {
     it('Function missing parameters', () => {
-      expect(complexOperations.sumGreaterThan()).toMatch('The params should be numbers')
+      expect(complexOperations.sumGratherThan()).toMatch('The params should be numbers')
     });
     it('Missing a number in parameters', () => {
-      expect(complexOperations.sumGreaterThan(13, 8)).toBe('The params should be numbers')
+      expect(complexOperations.sumGratherThan(13, 8)).toBe('The params should be numbers')
     });
     it('Using strings instead of numbers', () => {
-      expect(complexOperations.sumGreaterThan(9, 8, 'A')).toBe('The params should be numbers')
-    });
-    it('Using float numbers to be greater than third number', () => {
-      expect(complexOperations.sumGreaterThan(13.5, 5.11, 10)).toBe('18.61 is greater than 10')
-    });
-    it('Using float numbers to be less than third number', () => {
-      expect(complexOperations.sumGreaterThan(3.5, 2.1, 10)).toBe('5.6 is less than 10')
-    });
-    it('Using negative numbers', () => {
-      expect(complexOperations.sumGreaterThan(-5, -18, 15)).toBe('-23 is less than 15')
+      expect(complexOperations.sumGratherThan(9, 8, 'A')).toBe('The params should be numbers')
     });
   });
 
@@ -261,7 +247,7 @@ describe('complexOperation - Integration Tests', () => {
     it('Key not matching with array', () => {
       expect(complexOperations.sortArrayOfObjectsByKey(
         [{country: 'Argentina'}, {country: 'Poland'}, {country: 'Germany'}], 'city'))
-        .toBe('Some elements in the array does not have the town property')
+        .toBe('Some elements in the array does not have the city property')
     });
     it('Using an array with equal elements', () => {
       expect(complexOperations.sortArrayOfObjectsByKey(
@@ -282,20 +268,8 @@ describe('complexOperation - Integration Tests', () => {
     it('Using a string instead of an array', () => {
       expect(complexOperations.numberOfOddAndEvenNumbers('asdD')).toBe('The param should be an array')
     });
-    it('Using an array with float numbers', () => {
-      expect(complexOperations.numberOfOddAndEvenNumbers([1.3, 2.1, 3.6, 4.7, 5.5, 6.8])).toEqual(
-        {odd:6, even:0})
-    });
-    it('Using an array with negative numbers', () => {
-      expect(complexOperations.numberOfOddAndEvenNumbers([-1, -2, -3, -4, -5])).toEqual(
-        {odd:3, even:2})
-    });
     it('Using an array with strings within', () => {
       expect(complexOperations.numberOfOddAndEvenNumbers(['one', 2, 'three', 4, 'five'])).toBe('The array should have only numbers')
-    });
-    it('Using an array with integers', () => {
-      expect(complexOperations.numberOfOddAndEvenNumbers([2, 5, 8, 10, 13, 15, 18, 21])).toEqual(
-        {odd:4, even:4})
     });
   });
 }); 
